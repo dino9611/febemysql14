@@ -20,14 +20,14 @@ function App(props) {
     fetchdata()
   },[])
 
-  // useEffect(()=>{
-  //   fetchdata()
-  // },[page])
+  useEffect(()=>{
+    fetchdata()
+  },[page])
 
   const fetchdata = async ()=>{
     try{
       console.log(page)
-      var res=await Axios.get(`http://localhost:5000/toko/karyawans`)
+      var res=await Axios.get(`http://localhost:5000/toko/karyawans?page=${page}`)
       console.log(res.data)
       setdatakaryawan(res.data)
     }catch(err){
@@ -69,10 +69,11 @@ function App(props) {
   }
 
   const renderTable=()=>{
+    var pages=(page-1)*5
     return datakaryawan.map((val,index)=>{
       return (
       <tr key={index}>
-        <th scope="row">{index+1}</th>
+        <th scope="row">{pages+index+1}</th>
         <td>{val.nama}</td>
         <td>{val.usia}</td>
         <td>{val.berat}</td>
@@ -97,77 +98,85 @@ function App(props) {
   //     console.log(err)
   //   }
   // }
+  const pindahpage=(a)=>{
+    setpages(a)
+  }
   const renderpaging=()=>{
-    var jumlahpage=Math.ceil(11/5)
-    var arr=[]
-    for(var i=0;i<jumlahpage;i++){
-      console.log(i)
-      if((i+1)==page){
-        arr.push(
-        <PaginationItem disabled>
-          <PaginationLink >
-            {i+1}
-          </PaginationLink>
-        </PaginationItem>
-        )
+    var jumlahpage=Math.ceil(10/5)
+    let arr=new Array(jumlahpage)
+    // console.log(jumlahpage)
+    for(let i=0;i<arr.length;i++){
+      console.log(page,'ini page')
+      if((i+1)===page){
+        arr[i]=(<PaginationItem  key={i} disabled>
+                  <PaginationLink >
+                    {i+1}
+                  </PaginationLink>
+                </PaginationItem>)
       }else{
-        arr.push(
-          <PaginationItem>
-            <PaginationLink onClick={()=>setpages(i+1)}>
-              {i+1}
-            </PaginationLink>
-          </PaginationItem>
-        )
+        console.log(i)
+        arr[i]=(<PaginationItem  key={i} onClick={()=>pindahpage(i+1)} >
+                  <PaginationLink >
+                    {i+1}
+                  </PaginationLink>
+                </PaginationItem>)
       }
     }
+    
     return arr
   }
 
   return (
-    <div style={{height:'100vh'}} className='d-flex justify-content-center align-items-center'>
-      <div >
-        <Table striped>
-          <thead>
-            <tr>
-              <th>#</th>
-              <th>Nama</th>
-              <th>Usia</th>
-              <th>berat</th>
-              <th>kota</th>
-              <th>th</th>
-              <th>Action</th>
-            </tr>
-          </thead>
-          <tbody>
-            {renderTable()}
-          </tbody>
-          <tfoot>
-            <th>#</th>
-            <td>
-              <input value={addform.nama} placeholder='input name' onChange={(e)=>onChangeadd(e,'nama')}/>
-            </td>
-            <td>
-              <input placeholder='input usia' value={addform.usia} onChange={(e)=>onChangeadd(e,'usia')} type='number'/>
-            </td>
-            <td>
-              <input placeholder='input berat' value={addform.berat} onChange={(e)=>onChangeadd(e,'berat')} type='number'/>
-            </td>
-            <td>
-              <input placeholder='Kota' value={addform.kota} onChange={(e)=>onChangeadd(e,'kota')} type='text'/>
-            </td>
-            <td>
-              <input placeholder='th' value={addform.th} onChange={(e)=>onChangeadd(e,'th')} type='number'/>
-            </td>
-            <td>
-              <button onClick={onpostdataclick}>
-                Add
-              </button>
-            </td>
-          </tfoot>
-        </Table>
-        {/* <Pagination aria-label="Page navigation example">
-            {renderpaging()}
-          </Pagination> */}
+    <div>
+
+      <div style={{height:'100vh'}} className='d-flex justify-content-center align-items-center'>
+        <div >
+          <Table striped>
+            <thead>
+              <tr>
+                <th>#</th>
+                <th>Nama</th>
+                <th>Usia</th>
+                <th>berat</th>
+                <th>kota</th>
+                <th>th</th>
+                <th>Action</th>
+              </tr>
+            </thead>
+            <tbody>
+              {renderTable()}
+            </tbody>
+            <tfoot>
+              <tr>
+                <th>#</th>
+                <td>
+                  <input value={addform.nama} placeholder='input name' onChange={(e)=>onChangeadd(e,'nama')}/>
+                </td>
+                <td>
+                  <input placeholder='input usia' value={addform.usia} onChange={(e)=>onChangeadd(e,'usia')} type='number'/>
+                </td>
+                <td>
+                  <input placeholder='input berat' value={addform.berat} onChange={(e)=>onChangeadd(e,'berat')} type='number'/>
+                </td>
+                <td>
+                  <input placeholder='Kota' value={addform.kota} onChange={(e)=>onChangeadd(e,'kota')} type='text'/>
+                </td>
+                <td>
+                  <input placeholder='th' value={addform.th} onChange={(e)=>onChangeadd(e,'th')} type='number'/>
+                </td>
+                <td>
+                  <button onClick={onpostdataclick}>
+                    Add
+                  </button>
+                </td>
+
+              </tr>
+            </tfoot>
+          </Table>
+          <Pagination aria-label="Page navigation example">
+              {renderpaging()}
+            </Pagination>
+        </div>
       </div>
     </div>
   );
