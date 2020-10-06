@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import {connect} from 'react-redux'
 import Axios from 'axios';
-import { API_URL } from '../supports/ApiUrl';
+
 
 
 class SendVerified extends Component {
@@ -17,24 +17,23 @@ class SendVerified extends Component {
             email:this.props.Auth.email,
             userid:this.props.Auth.id
         }
-        Axios.post(`${API_URL}/users/sendemailverified`,obj)
+        Axios.post(`http://localhost:5000/auth/sendverify`,obj)
         .then((res)=>{
-            if(res.data.pesan){
-                alert('kirim email berhasil')
+            if(res.data){
+                alert('berhasil kirim email ulang')
+                this.setState({loading:false})
             }
         }).catch((err)=>{
-            console.log(err)
-        }).finally(()=>{
-            this.setState({loading:false})
+
         })
     }
 
     render() { 
         return (
-            <div className='paddingatas'>
+            <div >
                 <center>
                     <h1>
-                        apakah anda telah mendapatkan surat verified dari hokage, di email kalian ,
+                        apakah anda telah mendapatkan surat verified dari Raja bajak laut, di email kalian ,
                         kalo belum silahkan klik tombo dibawah ini
                     </h1>
                     {

@@ -33,6 +33,9 @@ const Example = (props) => {
             <NavItem className='mt-2 mr-3'>
               <Link to="/login">Login</Link>
             </NavItem>
+            <NavItem className='mt-2 mr-3'>
+              <Link to="/sendverified">sendverified</Link>
+            </NavItem>
             <UncontrolledDropdown nav inNavbar>
               <DropdownToggle nav caret>
                 Options
