@@ -1,9 +1,10 @@
 import Axios from 'axios'
+import {API_URL} from './../../helpers/ApiUrl'
 
 export const RegisterAction=(data)=>{
     return (dispatch)=>{
         dispatch({type:"LOADING"})
-        Axios.post('http://localhost:5000/auth/register',data)
+        Axios.post(`${API_URL}/auth/register`,data)
         .then((res)=>{
             localStorage.setItem('datauser',JSON.stringify(res.data))
             dispatch({type:"LOGIN",payload:res.data})
@@ -14,10 +15,11 @@ export const RegisterAction=(data)=>{
         })
     }
 }
+
 export const LoginAction=(data)=>{
     return (dispatch)=>{
         dispatch({type:"LOADING"})
-        Axios.post('http://localhost:5000/auth/login',data)
+        Axios.post(`${API_URL}/auth/login`,data)
         .then((res)=>{
             localStorage.setItem('datauser',JSON.stringify(res.data))
             dispatch({type:"LOGIN",payload:res.data})
@@ -32,8 +34,17 @@ export const LoginAction=(data)=>{
 export const KeepLogin=()=>{
     return (dispatch)=>{
         let datauser=localStorage.getItem('datauser')
-        datauser=JSON.parse(datauser)
-        dispatch({type:"LOGIN",payload:datauser})
+        if(datauser){
+            datauser=JSON.parse(datauser)
+            //cek tokennya dulu di api kalo kadaluarsa baru get di sql dan buat token baru --best practice
+            Axios.get(`${API_URL}/auth/keeplogin/${datauser.id}`)
+            .then((res)=>{
+                localStorage.setItem('datauser',JSON.stringify(res.data))
+                dispatch({type:"LOGIN",payload:res.data})
+            }).catch((err)=>{
+                console.log(err)
+            })
+        }
     }
 }
 

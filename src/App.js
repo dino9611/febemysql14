@@ -8,6 +8,7 @@ import Home from './pages/home'
 import Register from './pages/register'
 import Login from './pages/login'
 import Verified from './pages/verified'
+import Product from './pages/product'
 import SendVerified from './pages/sendVerif'
 import {connect} from 'react-redux'
 import {KeepLogin} from './redux/actions'
@@ -15,7 +16,7 @@ function App(props) {
 
   useEffect(()=>{
     props.KeepLogin()
-  },[])
+  },[]) // ini didmount
 
   return (
     <div>
@@ -25,6 +26,7 @@ function App(props) {
         <Route path='/register' exact component={Register} />
         <Route path='/login' exact component={Login} />
         <Route path='/verified' exact component={Verified} />
+        <Route path='/product' exact component={Product} />
         <Route path='/sendverified' exact component={SendVerified} />
       </Switch>
     </div>

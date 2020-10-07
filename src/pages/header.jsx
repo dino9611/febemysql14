@@ -6,14 +6,15 @@ import {
   NavbarBrand,
   Nav,
   NavItem,
-  NavLink,
+
   UncontrolledDropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem,
-  NavbarText
+
 } from 'reactstrap';
 import {Link} from 'react-router-dom'
+import {connect} from 'react-redux'
 
 const Example = (props) => {
   const [isOpen, setIsOpen] = useState(false);
@@ -27,12 +28,6 @@ const Example = (props) => {
         <NavbarToggler onClick={toggle} />
         <Collapse isOpen={isOpen} navbar>
           <Nav className="mr-auto" navbar>
-            <NavItem className='mt-2 mr-3'>
-              <Link to="/register">Register</Link>
-            </NavItem>
-            <NavItem className='mt-2 mr-3'>
-              <Link to="/login">Login</Link>
-            </NavItem>
             <NavItem className='mt-2 mr-3'>
               <Link to="/sendverified">sendverified</Link>
             </NavItem>
@@ -54,11 +49,28 @@ const Example = (props) => {
               </DropdownMenu>
             </UncontrolledDropdown>
           </Nav>
-          <NavbarText>Simple Text</NavbarText>
+          {
+            props.Auth.isLogin?
+            null
+            :
+            <Nav >
+              <NavItem className='mt-2 mr-3'>
+                <Link to="/register">Register</Link>
+              </NavItem>
+              <NavItem className='mt-2 mr-3'>
+                <Link to="/login">Login</Link>
+              </NavItem>
+            </Nav>
+          }
         </Collapse>
       </Navbar>
     </div>
   );
 }
 
-export default Example;
+const MapstatetoProps=(state)=>{
+  return{
+    Auth:state.Auth
+  }
+}
+export default connect(MapstatetoProps) (Example);
