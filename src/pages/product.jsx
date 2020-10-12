@@ -13,7 +13,6 @@ class Product extends Component {
         dataedit:{}
     }
 
-
     componentDidMount(){
         Axios.get(`${API_URL}/prod/allprod`)
         .then((res)=>{
@@ -88,29 +87,29 @@ class Product extends Component {
         }
     }
     onUploadeditClick=()=>{
-     
-            var formData=new FormData()
-            var options={
-                headers:{
-                    'Content-type':'multipart/form-data'
-                }
+        var formData=new FormData()
+        var options={
+            headers:{
+                'Content-type':'multipart/form-data'
             }
-            var data={
-                caption:this.state.dataedit.caption
-            }
-            formData.append('image',this.state.editfiles)
-            formData.append('data',JSON.stringify(data))
-            Axios.put(`${API_URL}/prod/editprod/${this.state.dataedit.id}`,formData,options)
-            .then((res)=>{
-                alert('berhasil')
-                this.setState({dataprod:res.data,editfiles:null,modal:false})
-            }).catch(err=>{
-                alert('gagal')
-                console.log(err)
-            })
+        }
+        var data={
+            caption:this.state.dataedit.caption
+        }
+        formData.append('image',this.state.editfiles)
+        formData.append('data',JSON.stringify(data))
+        Axios.put(`${API_URL}/prod/editprod/${this.state.dataedit.id}`,formData,options)
+        .then((res)=>{
+            alert('berhasil')
+            this.setState({dataprod:res.data,editfiles:null,modal:false})
+        }).catch(err=>{
+            alert('gagal')
+            console.log(err)
+        })
     }
+
     toggle=()=>{
-        this.setState({modal:!this.state.modal})
+        this.setState({modal:!this.state.modal,editfiles:null})
     }
 
     openModalEdit=(id)=>{
@@ -161,9 +160,10 @@ class Product extends Component {
                     </Table>
                 </div>
                 <Modal isOpen={this.state.modal} toggle={this.toggle} >
-                    <ModalHeader toggle={this.toggle}>Modal title</ModalHeader>
+                    <ModalHeader toggle={this.toggle}>Edit Modal</ModalHeader>
                     {
                         Object.keys(this.state.dataedit).length === 0?
+                        // untuk mengecek object kosong atau enggak
                         null
                         :
                         <ModalBody>

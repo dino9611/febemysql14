@@ -12,6 +12,7 @@ import Product from './pages/product'
 import SendVerified from './pages/sendVerif'
 import {connect} from 'react-redux'
 import {KeepLogin} from './redux/actions'
+import Socket from './pages/socket';
 function App(props) {
 
   useEffect(()=>{
@@ -28,6 +29,7 @@ function App(props) {
         <Route path='/verified' exact component={Verified} />
         <Route path='/product' exact component={Product} />
         <Route path='/sendverified' exact component={SendVerified} />
+        <Route path='/socket' exact component={Socket} />
       </Switch>
     </div>
   );
